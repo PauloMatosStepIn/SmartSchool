@@ -9,18 +9,25 @@ namespace SmartSchool.WebAPI.Models
   {
     public Aluno() { }
 
-    public Aluno(int id, string nome, string sobrenome, string telefone)
+    public Aluno(int id, int matricula, string nome, string apelido, string telefone, DateTime dataNascimento)
     {
       this.Id = id;
+      this.Matricula = matricula;
       this.Nome = nome;
-      this.Sobrenome = sobrenome;
+      this.Apelido = apelido;
+      this.DataNascimento = dataNascimento;
       this.Telefone = telefone;
     }
 
     public int Id { get; set; }
+    public int Matricula { get; set; }
     public string Nome { get; set; }
-    public string Sobrenome { get; set; }
+    public string Apelido { get; set; }
     public string Telefone { get; set; }
+    public DateTime DataNascimento { get; set; }
+    public DateTime DataMatricula { get; set; } = DateTime.Now;
+    public DateTime? DataConclusao { get; set; } = null;
+    public bool Activo { get; set; } = true;
     public IEnumerable<AlunoDisciplina> AlunosDisciplinas { get; set; }
   }
 }

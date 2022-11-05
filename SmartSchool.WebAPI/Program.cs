@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SmartSchool.WebAPI.Data;
+using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +34,8 @@ builder.Services.AddDbContext<DataContext>(
 //ref: https://www.coreprogramm.com/2020/02/difference-between-addsingleton-addScoped-addTransient.html
 
 builder.Services.AddScoped<IRepository, Repository>();
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddControllers()
 .AddNewtonsoftJson(

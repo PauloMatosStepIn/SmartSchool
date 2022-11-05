@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using SmartSchool.WebAPI.Data;
+using SmartSchool.WebAPI.Dtos;
 using SmartSchool.WebAPI.Models;
 
 namespace SmartSchool.WebAPI.Controllers
@@ -15,11 +12,15 @@ namespace SmartSchool.WebAPI.Controllers
   {
     // private readonly DataContext _context;
     private readonly IRepository _repo;
+    private readonly IMapper _mapper;
     public ProfessorController(
       // DataContext context, 
-      IRepository repo)
+      IRepository repo,
+      IMapper mapper
+      )
     {
       _repo = repo;
+      _mapper = mapper;
       // _context = context;
     }
 
@@ -30,9 +31,9 @@ namespace SmartSchool.WebAPI.Controllers
 
       // return Ok(_context.Professores);
 
-      var result = _repo.GetAllProfessores(true);
+      var professores = _repo.GetAllProfessores(true);
 
-      return Ok(result);
+      return Ok(_mapper.Map<IEnumerable<ProfessorDto>>(professores));
     }
 
     [HttpGet("{id:int}")]
@@ -41,7 +42,7 @@ namespace SmartSchool.WebAPI.Controllers
       // var professor = _context.Professores.FirstOrDefault(a => a.Id == id);
       var professor = _repo.GetProfessorById(id);
       if (professor == null) return BadRequest("Professor não encontrado");
-      return Ok(professor);
+      return Ok(_mapper.Map<ProfessorDto>(professor));
     }
 
     // [HttpGet("{nome}")]
@@ -60,11 +61,11 @@ namespace SmartSchool.WebAPI.Controllers
       //   return Ok(professor);
 
       _repo.Add(professor);
-      return _repo.SaveChanges() ? Ok(professor) : BadRequest("Professor não registado");
+      return _repo.SaveChanges() ? Ok(_mapper.Map<ProfessorDto>(professor)) : BadRequest("Professor não registado");
 
     }
     [HttpPut("{id}")]
-    public IActionResult Put(int id, Professor professor)
+    public IActionResult Put(int id, ProfessorRegisterDto model)
     {
       // var professorEncontrado = _context.Professores.AsNoTracking().FirstOrDefault(a => a.Id == id);
       var professorEncontrado = _repo.GetProfessorById(id);
@@ -74,13 +75,15 @@ namespace SmartSchool.WebAPI.Controllers
       // _context.SaveChanges();
       // return Ok(professor);
 
-      _repo.Update(professor);
-      return _repo.SaveChanges() ? Ok(professor) : BadRequest("Professor não actualizado");
+      _mapper.Map(model, professorEncontrado);
+
+      _repo.Update(professorEncontrado);
+      return _repo.SaveChanges() ? Ok(_mapper.Map<ProfessorDto>(professorEncontrado)) : BadRequest("Professor não actualizado");
 
     }
 
     [HttpPatch("{id}")]
-    public IActionResult Patch(int id, Professor professor)
+    public IActionResult Patch(int id, ProfessorRegisterDto model)
     {
       // var professorEncontrado = _context.Professores.AsNoTracking().FirstOrDefault(a => a.Id == id);
       var professorEncontrado = _repo.GetProfessorById(id);
@@ -91,8 +94,11 @@ namespace SmartSchool.WebAPI.Controllers
       // _context.SaveChanges();
       // return Ok(professor);
 
-      _repo.Update(professor);
-      return _repo.SaveChanges() ? Ok(professor) : BadRequest("Professor não actualizado");
+      _mapper.Map(model, professorEncontrado);
+
+
+      _repo.Update(professorEncontrado);
+      return _repo.SaveChanges() ? Ok(_mapper.Map<ProfessorDto>(professorEncontrado)) : BadRequest("Professor não actualizado");
 
     }
 

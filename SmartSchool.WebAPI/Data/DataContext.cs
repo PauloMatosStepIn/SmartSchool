@@ -62,7 +62,7 @@ namespace SmartSchool.WebAPI.Data
 
       builder.Entity<Aluno>()
           .HasData(new List<Aluno>(){
-                    new Aluno(1,1, "Marta", "Kent", "33225555", DateTime.Parse("14/05/2002")),
+                    new Aluno(1,1, "Marta", "Kent", "33225555", DateTime.Parse("10/05/2002")),
                     new Aluno(2,2, "Paula", "Isabela", "3354288", DateTime.Parse("12/07/2003")),
                     new Aluno(3,3, "Laura", "Antonia", "55668899", DateTime.Parse("3/12/2000")),
                     new Aluno(4,4, "Luiza", "Maria", "6565659", DateTime.Parse("10/01/2001")),
